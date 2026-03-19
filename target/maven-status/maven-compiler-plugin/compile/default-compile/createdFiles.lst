@@ -5,6 +5,7 @@ GenreFilter.class
 MinutesFilter.class
 PlainRater.class
 SecondRatings.class
+RecommendationWebServer.class
 TrueFilter.class
 TmdbPosterService.class
 YearAfterFilter.class

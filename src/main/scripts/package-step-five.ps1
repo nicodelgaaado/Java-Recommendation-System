@@ -9,7 +9,7 @@ $submissionSources = @(
     "src\\main\\java\\Filter.java",
     "src\\main\\java\\TrueFilter.java",
     "src\\main\\java\\FourthRatings.java",
-    "src\\main\\java\\RecommendationRunner.java"
+    "src\\main\\submission\\RecommendationRunner.java"
 )
 $submissionClasses = @(
     "Filter.class",
