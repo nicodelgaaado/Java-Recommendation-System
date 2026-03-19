@@ -74,6 +74,7 @@ public class RecommendationRunner implements Recommender {
         StringBuilder html = new StringBuilder();
         html.append(documentStart("Rate Movies"));
         html.append(buildStyles());
+        html.append("<div class=\"rec-app\">");
         html.append("<main class=\"page\">");
         html.append("<section class=\"hero\">");
         html.append("<p class=\"eyebrow\">Personalized discovery</p>");
@@ -158,6 +159,7 @@ public class RecommendationRunner implements Recommender {
         html.append("</div>");
         html.append("</form>");
         html.append("</main>");
+        html.append("</div>");
         html.append(documentEnd());
         return html.toString();
     }
@@ -177,6 +179,7 @@ public class RecommendationRunner implements Recommender {
 
         StringBuilder html = new StringBuilder();
         html.append(buildStyles());
+        html.append("<div class=\"rec-app\">");
         html.append("<main class=\"page\">");
 
         Rater webRater = RaterDatabase.getRater(webRaterID);
@@ -186,6 +189,7 @@ public class RecommendationRunner implements Recommender {
                     "Unable to find ratings for user " + escapeHtml(webRaterID) + "."
             ));
             html.append("</main>");
+            html.append("</div>");
             return html.toString();
         }
 
@@ -215,6 +219,7 @@ public class RecommendationRunner implements Recommender {
             ));
             html.append("<p class=\"back-link\"><a class=\"secondary-link\" href=\"/\">Rate another set of movies</a></p>");
             html.append("</main>");
+            html.append("</div>");
             return html.toString();
         }
 
@@ -285,6 +290,7 @@ public class RecommendationRunner implements Recommender {
         html.append("<p class=\"note\">Scores are weighted averages from users with the most similar rating patterns.</p>");
         html.append("<p class=\"back-link\"><a class=\"secondary-link\" href=\"/\">Rate another set of movies</a></p>");
         html.append("</main>");
+        html.append("</div>");
         return html.toString();
     }
 
@@ -385,7 +391,7 @@ public class RecommendationRunner implements Recommender {
     private String buildStyles() {
         return """
                 <style>
-                :root {
+                .rec-app {
                     --bg: #f4efe8;
                     --panel: rgba(255, 252, 247, 0.92);
                     --panel-strong: #fffdf9;
@@ -399,12 +405,13 @@ public class RecommendationRunner implements Recommender {
                     --shadow: 0 22px 60px rgba(46, 51, 63, 0.12);
                 }
 
-                * {
+                .rec-app,
+                .rec-app * {
                     box-sizing: border-box;
                 }
 
-                body {
-                    margin: 0;
+                .rec-app {
+                    width: 100%;
                     min-height: 100vh;
                     font-family: "Manrope", "Segoe UI", sans-serif;
                     color: var(--ink);
@@ -414,35 +421,35 @@ public class RecommendationRunner implements Recommender {
                             var(--bg);
                 }
 
-                .page {
+                .rec-app .page {
                     max-width: 1180px;
                     margin: 0 auto;
                     padding: 48px 20px 64px;
                 }
 
-                .hero,
-                .table-shell,
-                .state-card,
-                .rating-card,
-                .form-actions {
+                .rec-app .hero,
+                .rec-app .table-shell,
+                .rec-app .state-card,
+                .rec-app .rating-card,
+                .rec-app .form-actions {
                     border: 1px solid var(--line);
                     box-shadow: var(--shadow);
                 }
 
-                .hero,
-                .state-card,
-                .rating-card,
-                .form-actions {
+                .rec-app .hero,
+                .rec-app .state-card,
+                .rec-app .rating-card,
+                .rec-app .form-actions {
                     background: var(--panel);
                     border-radius: 28px;
                 }
 
-                .hero {
+                .rec-app .hero {
                     padding: 32px;
                     margin-bottom: 24px;
                 }
 
-                .eyebrow {
+                .rec-app .eyebrow {
                     margin: 0 0 10px;
                     font-size: 0.78rem;
                     letter-spacing: 0.18em;
@@ -451,7 +458,7 @@ public class RecommendationRunner implements Recommender {
                     color: var(--accent);
                 }
 
-                h2 {
+                .rec-app h2 {
                     margin: 0;
                     color: var(--ink);
                     font-family: "Space Grotesk", "Segoe UI", sans-serif;
@@ -459,69 +466,69 @@ public class RecommendationRunner implements Recommender {
                     line-height: 0.98;
                 }
 
-                h3 {
+                .rec-app h3 {
                     margin: 0;
                     font-family: "Space Grotesk", "Segoe UI", sans-serif;
                     font-size: 1.18rem;
                     line-height: 1.2;
                 }
 
-                .intro,
-                .note,
-                .state-card p,
-                .card-meta,
-                .card-detail span {
+                .rec-app .intro,
+                .rec-app .note,
+                .rec-app .state-card p,
+                .rec-app .card-meta,
+                .rec-app .card-detail span {
                     color: var(--muted);
                     line-height: 1.7;
                 }
 
-                .intro {
+                .rec-app .intro {
                     max-width: 760px;
                     margin: 14px 0 0;
                     font-size: 1rem;
                 }
 
-                .rating-form {
+                .rec-app .rating-form {
                     display: grid;
                     gap: 24px;
                 }
 
-                .rating-grid {
+                .rec-app .rating-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
                     gap: 20px;
                 }
 
-                .rating-card {
+                .rec-app .rating-card {
                     overflow: hidden;
                 }
 
-                .poster-wrap {
+                .rec-app .poster-wrap {
                     padding: 18px 18px 0;
                 }
 
-                .card-copy {
+                .rec-app .card-copy {
                     padding: 18px;
                 }
 
-                .card-meta {
+                .rec-app .card-meta {
                     margin: 10px 0 14px;
                     font-size: 0.92rem;
                     font-weight: 700;
                 }
 
-                .card-detail {
+                .rec-app .card-detail {
                     margin: 0 0 10px;
                     display: grid;
                     gap: 4px;
                 }
 
-                .card-detail strong,
-                .details-row strong {
+                .rec-app .card-detail strong,
+                .rec-app .details-row strong {
                     color: var(--ink);
                 }
 
-                .rating-label {
+                .rec-app .rating-label {
                     display: block;
                     margin-top: 16px;
                     margin-bottom: 8px;
@@ -532,7 +539,7 @@ public class RecommendationRunner implements Recommender {
                     color: var(--accent);
                 }
 
-                select {
+                .rec-app select {
                     width: 100%;
                     border: 1px solid rgba(26, 34, 51, 0.16);
                     border-radius: 14px;
@@ -542,7 +549,7 @@ public class RecommendationRunner implements Recommender {
                     background: #ffffff;
                 }
 
-                .form-actions {
+                .rec-app .form-actions {
                     padding: 20px 24px;
                     display: flex;
                     align-items: center;
@@ -550,8 +557,8 @@ public class RecommendationRunner implements Recommender {
                     gap: 16px;
                 }
 
-                .primary-button,
-                .secondary-link {
+                .rec-app .primary-button,
+                .rec-app .secondary-link {
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
@@ -562,7 +569,7 @@ public class RecommendationRunner implements Recommender {
                     transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
                 }
 
-                .primary-button {
+                .rec-app .primary-button {
                     border: 0;
                     padding: 14px 20px;
                     background: linear-gradient(135deg, #16324f, #0f766e);
@@ -570,45 +577,45 @@ public class RecommendationRunner implements Recommender {
                     cursor: pointer;
                 }
 
-                .primary-button:hover,
-                .secondary-link:hover {
+                .rec-app .primary-button:hover,
+                .rec-app .secondary-link:hover {
                     transform: translateY(-1px);
                 }
 
-                .secondary-link {
+                .rec-app .secondary-link {
                     padding: 12px 18px;
                     border: 1px solid rgba(15, 118, 110, 0.24);
                     background: var(--accent-soft);
                     color: var(--accent);
                 }
 
-                .back-link {
+                .rec-app .back-link {
                     margin: 22px 4px 0;
                 }
 
-                .table-shell {
+                .rec-app .table-shell {
                     overflow-x: auto;
                     border-radius: 28px;
                     background: var(--panel-strong);
                     backdrop-filter: blur(10px);
                 }
 
-                table {
+                .rec-app table {
                     width: 100%;
                     min-width: 900px;
                     border-collapse: separate;
                     border-spacing: 0;
                 }
 
-                th,
-                td {
+                .rec-app th,
+                .rec-app td {
                     padding: 18px 16px;
                     text-align: left;
                     vertical-align: top;
                     border-bottom: 1px solid var(--line);
                 }
 
-                th {
+                .rec-app th {
                     position: sticky;
                     top: 0;
                     z-index: 1;
@@ -619,30 +626,30 @@ public class RecommendationRunner implements Recommender {
                     text-transform: uppercase;
                 }
 
-                tbody tr {
+                .rec-app tbody tr {
                     background: transparent;
                     transition: background-color 180ms ease;
                 }
 
-                tbody tr:nth-child(even) {
+                .rec-app tbody tr:nth-child(even) {
                     background: rgba(26, 34, 51, 0.028);
                 }
 
-                tbody tr:hover {
+                .rec-app tbody tr:hover {
                     background: rgba(15, 118, 110, 0.08);
                 }
 
-                tbody tr:last-child td {
+                .rec-app tbody tr:last-child td {
                     border-bottom: 0;
                 }
 
-                .rank-cell,
-                .poster-cell,
-                .score-cell {
+                .rec-app .rank-cell,
+                .rec-app .poster-cell,
+                .rec-app .score-cell {
                     white-space: nowrap;
                 }
 
-                .rank-badge {
+                .rec-app .rank-badge {
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
@@ -655,7 +662,7 @@ public class RecommendationRunner implements Recommender {
                     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
                 }
 
-                img {
+                .rec-app img {
                     width: 100%;
                     max-width: 185px;
                     aspect-ratio: 185 / 278;
@@ -666,12 +673,12 @@ public class RecommendationRunner implements Recommender {
                     background: #ebe6de;
                 }
 
-                .poster-cell img {
+                .rec-app .poster-cell img {
                     width: 78px;
                     height: 114px;
                 }
 
-                .movie-link {
+                .rec-app .movie-link {
                     color: var(--ink);
                     text-decoration: none;
                     font-family: "Space Grotesk", "Segoe UI", sans-serif;
@@ -680,11 +687,11 @@ public class RecommendationRunner implements Recommender {
                     line-height: 1.35;
                 }
 
-                .movie-link:hover {
+                .rec-app .movie-link:hover {
                     color: var(--accent);
                 }
 
-                .meta {
+                .rec-app .meta {
                     display: inline-flex;
                     align-items: center;
                     margin-top: 10px;
@@ -697,21 +704,21 @@ public class RecommendationRunner implements Recommender {
                     letter-spacing: 0.04em;
                 }
 
-                .details-cell {
+                .rec-app .details-cell {
                     color: var(--muted);
                 }
 
-                .details-row + .details-row {
+                .rec-app .details-row + .details-row {
                     margin-top: 8px;
                 }
 
-                .details-row strong {
+                .rec-app .details-row strong {
                     display: inline-block;
                     min-width: 84px;
                     margin-right: 10px;
                 }
 
-                .score-pill {
+                .rec-app .score-pill {
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
@@ -725,57 +732,57 @@ public class RecommendationRunner implements Recommender {
                     letter-spacing: 0.03em;
                 }
 
-                .note {
+                .rec-app .note {
                     margin: 0;
                     font-size: 0.96rem;
                 }
 
-                .state-card {
+                .rec-app .state-card {
                     padding: 28px;
                     margin-bottom: 24px;
                 }
 
-                .state-card h2 {
+                .rec-app .state-card h2 {
                     font-size: 1.8rem;
                 }
 
-                .state-card p {
+                .rec-app .state-card p {
                     margin: 12px 0 0;
                 }
 
                 @media (max-width: 720px) {
-                    .page {
+                    .rec-app .page {
                         padding: 28px 14px 40px;
                     }
 
-                    .hero,
-                    .state-card,
-                    .form-actions {
+                    .rec-app .hero,
+                    .rec-app .state-card,
+                    .rec-app .form-actions {
                         padding: 24px 20px;
                         border-radius: 22px;
                     }
 
-                    .table-shell,
-                    .rating-card {
+                    .rec-app .table-shell,
+                    .rec-app .rating-card {
                         border-radius: 22px;
                     }
 
-                    .form-actions {
+                    .rec-app .form-actions {
                         align-items: stretch;
                         flex-direction: column;
                     }
 
-                    .primary-button,
-                    .secondary-link {
+                    .rec-app .primary-button,
+                    .rec-app .secondary-link {
                         width: 100%;
                     }
 
-                    th,
-                    td {
+                    .rec-app th,
+                    .rec-app td {
                         padding: 14px 12px;
                     }
 
-                    .poster-cell img {
+                    .rec-app .poster-cell img {
                         width: 68px;
                         height: 100px;
                         border-radius: 14px;
