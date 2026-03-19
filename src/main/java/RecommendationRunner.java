@@ -1,3 +1,7 @@
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -154,6 +158,7 @@ public class RecommendationRunner implements Recommender {
     }
 
     public static void main(String[] args) {
+        configureUtf8Stdout();
         RecommendationRunner runner = new RecommendationRunner();
         String sampleRaterId = args.length > 0 ? args[0] : "65";
         System.out.println("<!DOCTYPE html>");
@@ -168,5 +173,9 @@ public class RecommendationRunner implements Recommender {
 
     private String escapeHtmlAttribute(String value) {
         return escapeHtml(value).replace("'", "&#39;");
+    }
+
+    private static void configureUtf8Stdout() {
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
     }
 }
