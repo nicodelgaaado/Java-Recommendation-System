@@ -29,22 +29,6 @@ java -cp target\classes MovieRunnerSimilarRatings
 java -cp target\classes RecommendationRunner
 ```
 
-To enable TMDb poster lookups for the final HTML output, set one of these
-environment variables before running `RecommendationRunner`:
-
-```powershell
-$env:TMDB_API_KEY="your_tmdb_v3_key"
-```
-
-or
-
-```powershell
-$env:TMDB_BEARER_TOKEN="your_tmdb_read_access_token"
-```
-
-If neither is set, the project falls back to an inline placeholder poster instead
-of showing a broken image.
-
 ## Data
 
 CSV data files live in `src/main/resources/data`.
