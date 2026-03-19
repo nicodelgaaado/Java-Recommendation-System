@@ -18,6 +18,9 @@ public class RecommendationRunner implements Recommender {
     private static final int MINIMAL_RATERS = 5;
     private static final int SIMILAR_RATERS = 20;
     private static final int MAX_RECOMMENDATIONS = 10;
+    private static final Map<String, String> POSTER_OVERRIDES = Map.of(
+            "1690953", "https://upload.wikimedia.org/wikipedia/en/2/29/Despicable_Me_2_poster.jpg"
+    );
 
     @Override
     public ArrayList<String> getItemsToRate() {
@@ -333,6 +336,11 @@ public class RecommendationRunner implements Recommender {
     private String getPosterUrl(Movie movie) {
         if (movie == null) {
             return placeholderDataUri("Movie Poster");
+        }
+
+        String overrideUrl = POSTER_OVERRIDES.get(movie.getID());
+        if (overrideUrl != null && !overrideUrl.isBlank()) {
+            return overrideUrl;
         }
 
         String poster = movie.getPoster();
