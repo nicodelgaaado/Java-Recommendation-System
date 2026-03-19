@@ -60,6 +60,3 @@ CSV data files live in `src/main/resources/data`.
 - Step Five includes a `RecommendationRunner` that implements `Recommender` and
   prints an HTML recommendation table, while `RecommendationWebServer` provides
   the enhanced local browser-based rating workflow.
-- `src/main/scripts/package-step-five.ps1` builds a minimal Duke upload zip from
-  Java 8-compatible class files, using `src/main/submission/RecommendationRunner.java`
-  for the safer submission variant.
