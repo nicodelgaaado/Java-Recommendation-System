@@ -1,6 +1,7 @@
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,6 @@ public class RecommendationRunner implements Recommender {
     private static final int MINIMAL_RATERS = 5;
     private static final int SIMILAR_RATERS = 20;
     private static final int MAX_RECOMMENDATIONS = 10;
-    private final TmdbPosterService tmdbPosterService = new TmdbPosterService();
 
     @Override
     public ArrayList<String> getItemsToRate() {
@@ -99,8 +99,8 @@ public class RecommendationRunner implements Recommender {
             }
 
             Integer selectedRating = selectedRatings == null ? null : selectedRatings.get(movieId);
-            String posterUrl = tmdbPosterService.getPosterUrl(movie);
-            String fallbackPosterUrl = tmdbPosterService.getFallbackPosterUrl(movie);
+            String posterUrl = getPosterUrl(movie);
+            String fallbackPosterUrl = getFallbackPosterUrl(movie);
             html.append("<article class=\"rating-card\">");
             html.append("<div class=\"poster-wrap\">");
             html.append("<img src=\"")
@@ -239,8 +239,8 @@ public class RecommendationRunner implements Recommender {
             }
 
             String imdbLink = "https://www.imdb.com/title/tt" + movie.getID();
-            String posterUrl = tmdbPosterService.getPosterUrl(movie);
-            String fallbackPosterUrl = tmdbPosterService.getFallbackPosterUrl(movie);
+            String posterUrl = getPosterUrl(movie);
+            String fallbackPosterUrl = getFallbackPosterUrl(movie);
             html.append("<tr>");
             html.append("<td class=\"rank-cell\"><span class=\"rank-badge\">")
                     .append(index + 1)
@@ -322,6 +322,64 @@ public class RecommendationRunner implements Recommender {
                 </body>
                 </html>
                 """;
+    }
+
+    private String getPosterUrl(Movie movie) {
+        if (movie == null) {
+            return placeholderDataUri("Movie Poster");
+        }
+
+        String poster = movie.getPoster();
+        if (poster == null || poster.isBlank() || "N/A".equalsIgnoreCase(poster)) {
+            return getFallbackPosterUrl(movie);
+        }
+        return normalizePosterUrl(poster);
+    }
+
+    private String getFallbackPosterUrl(Movie movie) {
+        String title = movie == null ? "Movie Poster" : movie.getTitle();
+        return placeholderDataUri(title);
+    }
+
+    private String placeholderDataUri(String title) {
+        String safeTitle = title == null || title.isBlank() ? "Movie Poster" : title;
+        String svg = "<svg xmlns='http://www.w3.org/2000/svg' width='185' height='278' viewBox='0 0 185 278'>"
+                + "<rect width='185' height='278' fill='#dfe6eb'/>"
+                + "<rect x='12' y='12' width='161' height='254' rx='10' fill='#f8fafb' stroke='#a7b4be'/>"
+                + "<text x='92.5' y='122' text-anchor='middle' font-size='16' font-family='Arial, sans-serif' fill='#567'>Poster</text>"
+                + "<text x='92.5' y='148' text-anchor='middle' font-size='13' font-family='Arial, sans-serif' fill='#567'>unavailable</text>"
+                + "<text x='92.5' y='188' text-anchor='middle' font-size='12' font-family='Arial, sans-serif' fill='#789'>"
+                + escapeForXml(trimForPoster(safeTitle))
+                + "</text>"
+                + "</svg>";
+
+        return "data:image/svg+xml;charset=UTF-8," + urlEncode(svg);
+    }
+
+    private String trimForPoster(String title) {
+        if (title.length() <= 22) {
+            return title;
+        }
+        return title.substring(0, 19) + "...";
+    }
+
+    private String escapeForXml(String value) {
+        return value
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
+
+    private String urlEncode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8).replace("+", "%20");
+    }
+
+    private String normalizePosterUrl(String posterUrl) {
+        return posterUrl
+                .replace("http://ia.media-imdb.com/", "https://m.media-amazon.com/")
+                .replace("https://ia.media-imdb.com/", "https://m.media-amazon.com/");
     }
 
     private String buildStyles() {

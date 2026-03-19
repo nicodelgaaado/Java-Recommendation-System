@@ -8,7 +8,6 @@ $legacySubmissionDir = Join-Path $zipDir "submission-classes"
 $submissionClasses = @(
     "FourthRatings.class",
     "RecommendationRunner.class",
-    "TmdbPosterService.class",
     "Filter.class",
     "AllFilters.class",
     "TrueFilter.class",

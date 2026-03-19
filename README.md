@@ -39,7 +39,7 @@ java -cp target\classes RecommendationWebServer
 The server opens `http://localhost:8000/` and keeps the enhanced user-rating flow local:
 
 - 12 movies are displayed for rating
-- movie posters are resolved from TMDb when configured, otherwise Wikipedia or an inline placeholder is used
+- movie posters come from the dataset poster URLs, with an inline placeholder fallback
 - at least 5 ratings are required before submission
 - recommendations are shown in an HTML table with the richer card and table layout
 
